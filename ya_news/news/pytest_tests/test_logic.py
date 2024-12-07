@@ -17,7 +17,7 @@ COMMENT_DATA = {
 
 
 def test_anon_is_not_post_comment(client, detail_url, login_url):
-    """Тест: Анонимный пользователь не может отправить коммент"""
+    """Тест: Анонимный пользователь не может отправить коммент."""
     old_comments = Comment.objects.count()
     response = client.post(detail_url, data=COMMENT_DATA)
     expected_url = f'{login_url}?next={detail_url}'
@@ -27,7 +27,7 @@ def test_anon_is_not_post_comment(client, detail_url, login_url):
 
 def test_auth_user_post_comment(not_author_client, not_author,
                                 news, detail_url):
-    """Тест: Авторизованный пользователь может отправить коммент"""
+    """Тест: Авторизованный пользователь может отправить коммент."""
     Comment.objects.all().delete()
     response = not_author_client.post(detail_url, data=COMMENT_DATA)
     assertRedirects(response, detail_url + '#comments')
@@ -41,7 +41,8 @@ def test_auth_user_post_comment(not_author_client, not_author,
 def test_auth_user_edit_comment(author_client, comment,
                                 edit_url, detail_url):
     """Тест: Авторизованный пользователь может
-    отредактировать комментарий"""
+    отредактировать комментарий.
+    """
     response = author_client.post(edit_url, data=COMMENT_DATA)
     update_comment = Comment.objects.get(id=comment.id)
     assertRedirects(response, detail_url + '#comments')
@@ -52,7 +53,8 @@ def test_auth_user_edit_comment(author_client, comment,
 
 def test_auth_user_delete_comment(author_client, delete_url, detail_url):
     """Тест: Авторизованный пользователь может
-    удалить комментарий"""
+    удалить комментарий.
+    """
     all_comments = Comment.objects.count()
     response = author_client.delete(delete_url)
     assertRedirects(response, detail_url + '#comments')
@@ -61,7 +63,8 @@ def test_auth_user_delete_comment(author_client, delete_url, detail_url):
 
 def test_not_author_edit_comment(not_author_client, comment, edit_url):
     """Тест: Авторизованный пользователь не может
-    редактировать чужие комментарии"""
+    редактировать чужие комментарии.
+    """
     response = not_author_client.post(edit_url, data=COMMENT_DATA)
     update_comment = Comment.objects.get(id=comment.id)
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -72,7 +75,8 @@ def test_not_author_edit_comment(not_author_client, comment, edit_url):
 
 def test_not_author_delete_comment(not_author_client, delete_url):
     """Тест: Авторизованный пользователь не может
-    удалять чужие комментарии"""
+    удалять чужие комментарии.
+    """
     old_comments = Comment.objects.count()
     response = not_author_client.delete(delete_url)
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -81,7 +85,8 @@ def test_not_author_delete_comment(not_author_client, delete_url):
 
 def test_bad_words(author_client, detail_url):
     """Комментарии с плохими словами не будут
-    опубликованы, форма вернет предупреждение и оишбку"""
+    опубликованы, форма вернет предупреждение и оишбку.
+    """
     old_comment = Comment.objects.count()
     COMMENT_DATA['text'] = f'Текст со словом {BAD_WORDS[0]}'
     response = author_client.post(detail_url, data=COMMENT_DATA)
