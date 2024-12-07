@@ -16,12 +16,17 @@ class UniversalTestClass(TestCase):
         cls.form_data = {
             'title': 'Новый заголовок',
             'text': 'Новый текст',
-            'slug': 'Новый слаг'
         }
         cls.reader_client = Client()
         cls.reader_client.force_login(cls.reader)
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)
+        cls.notes_success_url = reverse('notes:success')
+        cls.new_form_data = {
+            'title': 'Новый заголовок',
+            'text': 'Новый текст',
+            'slug': 'Новый слаг'
+        }
 
 
 class UniversalTestNote(UniversalTestClass):
@@ -30,12 +35,8 @@ class UniversalTestNote(UniversalTestClass):
     def setUpTestData(cls):
         super().setUpTestData()
         cls.note = Note.objects.create(
-            title='Тестовая заметка',
-            text='Текст',
+            title='Новый заголовок',
+            text='Новый текст',
             author=cls.author,
+            slug='slug'
         )
-        # cls.add_url = reverse('notes:add')
-        # cls.edit_url = reverse(
-        #     'notes:edit',
-        #     kwargs={'slug': cls.note.slug})
-        # cls.add_and_edit_urls = (cls.add_url, cls.edit_url)
