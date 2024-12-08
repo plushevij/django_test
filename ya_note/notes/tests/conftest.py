@@ -9,6 +9,7 @@ User = get_user_model()
 
 class UniversalTestClass(TestCase):
     """Универсальный класс тестов."""
+
     @classmethod
     def setUpTestData(cls):
         cls.author = User.objects.create(username='Автор')
@@ -31,6 +32,7 @@ class UniversalTestClass(TestCase):
 
 class UniversalTestNote(UniversalTestClass):
     """Универсальный класс тестов для заметок."""
+
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
